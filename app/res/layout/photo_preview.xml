@@ -1,0 +1,43 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/color_06"
+    android:clickable="false" >
+
+    <com.android.medicineCommon.photoview.ViewPagerFixed
+        android:id="@+id/vp_preview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <RelativeLayout
+        android:id="@+id/preview_image_header"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:background="@color/color_01" >
+
+        <TextView
+            android:id="@+id/header_back"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_centerVertical="true"
+            android:background="@drawable/back_bg_selector"
+            android:drawableLeft="@drawable/user_back_btn"
+            android:paddingRight="5dp"
+            android:textColor="@color/color_04"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/tv_del"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:gravity="center"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"
+            android:drawableLeft="@drawable/btn_img_trash"
+            android:textColor="@color/color_04"
+            android:textSize="16sp" />
+    </RelativeLayout>
+
+</RelativeLayout>

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="back_bg_color_selected">#4Dffffff</color>
+    <color name="back_bg_color">#00000000</color>
+
+    <!-- 透明 -->
+    <color name="transparent">#00000000</color>
+
+    <!-- 1号 APP基础色 -->
+    <color name="color_01">#1975cf</color>
+    <!-- 2号 用于按钮，优惠信息，交互反馈色 -->
+    <color name="color_02">#ff9402</color>
+    <!-- 3号 用于疯抢、优惠、未读消息背景色等标签底色 -->
+    <color name="color_03">#ff5000</color>
+    <!-- 4号 用户反白 -->
+    <color name="color_04">#ffffff</color>
+    <!-- 5号 用户链接 -->
+    <color name="color_05">#00a0ff</color>
+    <!-- 6号 用于标题，正文 -->
+    <color name="color_06">#333</color>
+    <!-- 7号 用于菜单、列表文字 -->
+    <color name="color_07">#666</color>
+    <!-- 8号 用于说明文字，提示文案 -->
+    <color name="color_08">#999</color>
+    <!-- 9号 用于搜索框、输入框默认提示，次要文字、无效文字 -->
+    <color name="color_09">#ccc</color>
+    <!-- 10号 用于分割线、按钮描边 -->
+    <color name="color_10">#e4e4e4</color>
+
+</resources>

@@ -1,0 +1,57 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/color_06"
+    android:clickable="false">
+
+    <!-- com.android.medicineCommon.photoview.PhotoView -->
+    <me.xiaopan.sketch.SketchImageView
+        android:id="@+id/iv_preview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="fitCenter"
+        android:src="@drawable/image_loading_default" />
+
+    <RelativeLayout
+        android:id="@+id/preview_image_header"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:background="@color/color_01">
+
+        <TextView
+            android:id="@+id/header_back"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_centerVertical="true"
+            android:background="@drawable/back_bg_selector"
+            android:drawableLeft="@drawable/user_back_btn"
+            android:gravity="center"
+            android:paddingRight="5dp"
+            android:textColor="@color/color_04"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_centerInParent="true"
+            android:gravity="center"
+            android:text="@string/img_review"
+            android:textColor="@color/color_04"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/tv_del"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:gravity="center"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"
+            android:text="@string/del"
+            android:textColor="@color/color_04"
+            android:textSize="16sp" />
+    </RelativeLayout>
+
+</RelativeLayout>

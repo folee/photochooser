@@ -1,0 +1,267 @@
+package com.nextev.photochooser.fragment;
+
+import com.nextev.photochooser.R;
+import com.nextev.photochooser.PhotoChooseActivity;
+import com.nextev.photochooser.adapter.AlbumAdapter;
+import com.nextev.photochooser.adapter.vo.AlbumItem;
+import com.nextev.photochooser.util.DebugLog;
+import com.nextev.photochooser.util.LoadeImageConsts;
+
+import android.database.Cursor;
+import android.graphics.Color;
+import android.os.Bundle;
+import android.provider.MediaStore;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.CursorLoader;
+import android.support.v4.content.Loader;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.Transformation;
+import android.widget.AdapterView;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.ListView;
+
+/**
+ * 相册选择Fragment
+ */
+public class SelectAlbumFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
+	private static final String[]	LOADING_COLUMN		= { MediaStore.Images.ImageColumns._ID, // ID ?559497?
+			MediaStore.Images.Media.BUCKET_ID, // dir id
+			MediaStore.Images.Media.BUCKET_DISPLAY_NAME, // 目录名字 "Camera"
+			"count('bucket_display_name') as album_count" // 计算相册包含相片总数
+														};
+	private static final float		MASK_ALPHA			= 0.5f;
+	private int						ITEM_HEIGHT;
+	/** 相册选择List是否显示的标示 */
+	private boolean					isListViewShow;
+
+	private AlbumAdapter			adapter;
+	private ListView				albumListView;
+	/** 选中相册名称 */
+	private CheckBox				mAlbumTitle;
+	private Cursor					cursor;
+	private boolean					isAlbumClickable	= false;
+	private int						mLoadTimes			= 0;
+
+	@Override
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+		return inflater.inflate(R.layout.fragment_select_album, container, false);
+	}
+
+	@Override
+	public void onViewCreated(View view, Bundle savedInstanceState) {
+		super.onViewCreated(view, savedInstanceState);
+
+		ITEM_HEIGHT = getResources().getDimensionPixelSize(R.dimen.qw_dip_90);
+
+		getView().setBackgroundColor(Color.argb(0, 0, 0, 0));
+		getView().setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				if (isListViewShow) {
+					hideList();
+				}
+			}
+		});
+		getView().setClickable(false);
+
+		mAlbumTitle = (CheckBox) getView().findViewById(R.id.cb_choose_image_album);
+		albumListView = (ListView) getView().findViewById(R.id.select_album_listview);
+		albumListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+				AlbumItem item = adapter.getItem(position);
+				if (item != null) {
+					((PhotoChooseActivity) getActivity()).refreshGridViewByAlbumId(item.id, item.albumName);
+					adapter.setCurrAlumbId(item.id);
+					mAlbumTitle.setText(item.albumName);
+				}
+				else {
+					((PhotoChooseActivity) getActivity()).refreshGridViewByAlbumId(LoadeImageConsts.LOADER_IMAGE_CURSOR, getString(R.string.all_photos));
+					adapter.setCurrAlumbId(LoadeImageConsts.LOADER_IMAGE_CURSOR);
+					mAlbumTitle.setText(getString(R.string.all_photos));
+				}
+
+				hideList();
+			}
+		});
+		adapter = new AlbumAdapter(getActivity());
+		albumListView.setAdapter(adapter);
+
+		mLoadTimes = 0;
+		getLoaderManager().initLoader(LoadeImageConsts.LOADER_ALBUM_CURSOR, null, this);
+
+		// show or hide album listview
+		mAlbumTitle.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+			@Override
+			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+				showOrHideList();
+			}
+		});
+
+		getView().findViewById(R.id.btn_preview).setOnClickListener(new View.OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				((PhotoChooseActivity) getActivity()).showPreview();
+			}
+		});
+	}
+
+	public void setFirstItem(AlbumItem item) {
+		adapter.setFirstItem(true, item);
+	}
+
+
+	/**
+	 * 显示或隐藏相册列表
+	 */
+	public void showOrHideList() {
+		if (isListViewShow) {
+			hideList();
+		}
+		else {
+			showList();
+		}
+	}
+
+	/**
+	 * 显示相册列表
+	 */
+	private void showList() {
+		if (getView().getAnimation() == null && !isListViewShow && isAlbumClickable) {
+			getView().setClickable(true);
+			isListViewShow = true;
+			ViewGroup.LayoutParams params = albumListView.getLayoutParams();
+			getView().startAnimation(new ShowHideAlbumAnimation(0, MASK_ALPHA, params.height, getCurHeight(), false));
+		}
+
+		if (adapter != null) {
+			adapter.notifyDataSetChanged();
+		}
+	}
+
+	/**
+	 * 隐藏相册列表
+	 */
+	private void hideList() {
+		if (getView().getAnimation() == null && isListViewShow) {
+			getView().setClickable(false);
+			isListViewShow = false;
+			ViewGroup.LayoutParams params = albumListView.getLayoutParams();
+			getView().startAnimation(new ShowHideAlbumAnimation(MASK_ALPHA, 0, params.height, getCurHeight(), false));
+		}
+	}
+
+	/**
+	 * 获取相册选择List显示高度
+	 *
+	 * @return
+	 */
+	private int getCurHeight() {
+		if (isListViewShow) {
+			int max = ITEM_HEIGHT * 4 + ITEM_HEIGHT / 2;
+			int height = 0;
+			if (adapter != null) {
+				height = (int) Math.min(max, ITEM_HEIGHT * adapter.getCount());
+			}
+			return height;
+		}
+		else {
+			return 0;
+		}
+	}
+
+	@Override
+	public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+		// 1=1) group by(bucket_id :用于按照结果（MediaStore.Images.Media.BUCKET_ID = bucket_display_name）去重，选出所有相册
+		return new CursorLoader(getActivity(), MediaStore.Images.Media.EXTERNAL_CONTENT_URI, LOADING_COLUMN, "1=1) group by (bucket_display_name", null, MediaStore.Images.Media.DEFAULT_SORT_ORDER);
+	}
+
+	@Override
+	public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+		if(mLoadTimes < 2){
+			adapter.setAlbumCursor(data);
+			isAlbumClickable = true;
+			this.cursor = data;
+		}
+		mLoadTimes++;
+	}
+
+	@Override
+	public void onLoaderReset(Loader<Cursor> loader) {
+		DebugLog.d("---> isAlbumClickable = " + isAlbumClickable);
+		if (this.cursor != null && !this.cursor.isClosed()) {
+			this.cursor.close();
+			isAlbumClickable = false;
+		}
+	}
+
+	/**
+	 * 相册List显示隐藏动画
+	 */
+	public final class ShowHideAlbumAnimation extends Animation {
+
+		private float	fromAlpha;
+		private float	toAlpha;
+		private int		fromHeight;
+		private int		toHeight;
+		private boolean	onlyChangListHeight;
+
+		public ShowHideAlbumAnimation(float fromAlpha, float toAlpha, int fromHeight, int toHeight, boolean onlyChangListHeight) {
+			setDuration(300);
+			setFillAfter(false);
+			setRepeatCount(0);
+			this.fromHeight = fromHeight;
+			this.fromAlpha = fromAlpha;
+			this.toAlpha = toAlpha;
+			this.toHeight = toHeight;
+			this.onlyChangListHeight = onlyChangListHeight;
+
+			this.setAnimationListener(new AnimationListener() {
+				@Override
+				public void onAnimationStart(Animation animation) {
+
+				}
+
+				@Override
+				public void onAnimationEnd(Animation animation) {
+					if (!ShowHideAlbumAnimation.this.onlyChangListHeight) {
+						if (ShowHideAlbumAnimation.this.toAlpha == 0) {
+							getView().setClickable(false);
+						}
+						else {
+							getView().setClickable(true);
+						}
+						getView().setBackgroundColor(Color.argb((int) (ShowHideAlbumAnimation.this.toAlpha * 255), 0, 0, 0));
+					}
+					ViewGroup.LayoutParams params = albumListView.getLayoutParams();
+					params.height = ShowHideAlbumAnimation.this.toHeight;
+					albumListView.setLayoutParams(params);
+					getView().clearAnimation();
+				}
+
+				@Override
+				public void onAnimationRepeat(Animation animation) {
+
+				}
+			});
+		}
+
+		@Override
+		protected void applyTransformation(float interpolatedTime, Transformation t) {
+			ViewGroup.LayoutParams params = albumListView.getLayoutParams();
+			params.height = (int) (fromHeight + (toHeight - fromHeight) * interpolatedTime);
+			albumListView.setLayoutParams(params);
+
+			if (!ShowHideAlbumAnimation.this.onlyChangListHeight) {
+				float alpha = (fromAlpha + (toAlpha - fromAlpha) * interpolatedTime);
+				getView().setBackgroundColor(Color.argb((int) (alpha * 255), 0, 0, 0));
+			}
+		}
+	}
+}

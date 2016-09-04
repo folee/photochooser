@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+    <me.xiaopan.sketch.SketchImageView
+        android:id="@+id/alumb_picture"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_margin="6dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/ic_launcher"/>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="10dp"
+        android:layout_toRightOf="@+id/alumb_picture"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/alubm_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="所有图片"
+            android:textSize="16sp"/>
+
+        <TextView
+            android:id="@+id/alumb_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:textColor="@color/color_08"
+            android:textSize="12sp"/>
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/alumb_curr_flag"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="20dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/curr_flag"
+        android:visibility="gone"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:layout_below="@+id/alumb_picture"
+        android:background="@color/color_09"/>
+</RelativeLayout>

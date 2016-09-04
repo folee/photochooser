@@ -1,0 +1,95 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:id="@+id/choose_image_header"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:background="@color/color_01">
+
+        <TextView
+            android:id="@+id/header_back"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_centerVertical="true"
+            android:background="@drawable/back_bg_selector"
+            android:drawableLeft="@drawable/user_back_btn"
+            android:ellipsize="end"
+            android:gravity="center"
+            android:maxLength="20"
+            android:paddingRight="15dp"
+            android:singleLine="true"
+            android:text="@string/back"
+            android:textColor="@color/color_04"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/header_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:textColor="@color/color_04"
+            android:textSize="18sp"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/header_right_button"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:background="@drawable/back_bg_selector"
+            android:gravity="center"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"
+            android:text="@string/complete"
+            android:textColor="@color/color_04"
+            android:textSize="18sp" />
+    </RelativeLayout>
+
+    <GridView
+        android:id="@+id/choose_image_gridview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/choose_image_header"
+        android:background="@color/color_04"
+        android:clipToPadding="true"
+        android:horizontalSpacing="@dimen/qw_dip_01"
+        android:listSelector="@null"
+        android:numColumns="3"
+        android:scrollbars="none"
+        android:stretchMode="columnWidth"
+        android:verticalSpacing="@dimen/qw_dip_01"/>
+
+    <TextView
+        android:id="@+id/tv_no_photo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/choose_image_header"
+        android:layout_centerInParent="true"
+        android:layout_marginTop="@dimen/qw_dip_30"
+        android:text="相册为空"
+        android:textColor="#848484"
+        android:textSize="18sp"
+        android:visibility="gone" />
+
+    <!-- 相册选择Fragment -->
+    <fragment
+        android:id="@+id/choose_image_album"
+        android:name="com.nextev.photochooser.fragment.SelectAlbumFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentBottom="true"
+        android:layout_below="@+id/choose_image_header"
+        tools:layout="@layout/fragment_select_album" />
+
+    <!-- 图片预览Fragment显示View-->
+    <RelativeLayout
+        android:id="@+id/preview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+</RelativeLayout>

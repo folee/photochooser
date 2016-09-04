@@ -1,0 +1,66 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:clickable="false" >
+
+    <ListView
+        android:id="@+id/select_album_listview"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_above="@+id/choose_image_bottom"
+        android:layout_gravity="bottom"
+        android:background="@color/color_04"
+        android:cacheColorHint="@color/color_04"
+        android:divider="@null"
+        android:dividerHeight="0dp"
+        android:listSelector="@color/color_04" />
+
+    <RelativeLayout
+        android:id="@+id/choose_image_bottom"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_alignParentBottom="true"
+        android:alpha="0.53"
+        android:background="@color/color_06" >
+
+        <Button
+            android:id="@+id/btn_preview"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:background="@null"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"
+            android:text="@string/photo_preview"
+            android:textColor="@drawable/text_color_change"
+            android:textSize="18sp" />
+        <!-- @drawable/updown_selector @drawable/bottom_arr_white -->
+
+        <CheckBox
+            android:id="@+id/cb_choose_image_album"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:background="@null"
+            android:button="@null"
+            android:checked="false"
+            android:ellipsize="end"
+            android:maxLength="20"
+            android:paddingLeft="15dp"
+            android:singleLine="true"
+            android:text="@string/all_photos"
+            android:textColor="@drawable/text_color_change"
+            android:textSize="18sp" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentBottom="true"
+            android:layout_toRightOf="@+id/cb_choose_image_album"
+            android:clickable="true"
+            android:paddingRight="15dp"
+            android:paddingTop="15dp"
+            android:scaleType="center"
+            android:src="@drawable/bottom_arr_white" />
+    </RelativeLayout>
+
+</RelativeLayout>
