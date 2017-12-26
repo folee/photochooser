@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:alpha="0.9"
-                android:background="@color/color_06"
-                android:descendantFocusability="blocksDescendants">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:alpha="0.9"
+    android:background="@color/color_06"
+    android:descendantFocusability="blocksDescendants">
 
-    <me.xiaopan.sketch.SketchImageView
+    <ImageView
         android:id="@+id/picture_imageview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@null"
         android:scaleType="centerCrop"
-        android:src="@drawable/ic_launcher"/>
+        android:src="@drawable/ic_launcher" />
 
     <CheckBox
         android:id="@+id/picture_checkbox"
@@ -24,7 +24,7 @@
         android:checked="false"
         android:paddingBottom="10dp"
         android:paddingLeft="10dp"
-        android:paddingTop="5dp"/>
+        android:paddingTop="5dp" />
 
     <TextView
         android:id="@+id/text"
@@ -32,6 +32,6 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:textSize="10sp"
-        android:visibility="gone"/>
+        android:visibility="gone" />
 
 </RelativeLayout>

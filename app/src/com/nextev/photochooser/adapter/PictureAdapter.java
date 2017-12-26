@@ -2,7 +2,6 @@ package com.nextev.photochooser.adapter;
 
 import java.io.File;
 
-
 import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.Context;
@@ -13,21 +12,18 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.CheckBox;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.Toast;
-
+import com.bumptech.glide.Glide;
 import com.nextev.photochooser.R;
 import com.nextev.photochooser.PhotoChooseActivity;
 import com.nextev.photochooser.PhotoChooseMgr;
 import com.nextev.photochooser.adapter.vo.ImageItem;
 import com.nextev.photochooser.util.DebugLog;
 import com.nextev.photochooser.util.Utils;
-
-import me.xiaopan.sketch.DisplayOptions;
-import me.xiaopan.sketch.SketchImageView;
-import me.xiaopan.sketch.display.DefaultImageDisplayer;
+import com.nextev.photoview.PhotoView;
 
 public class PictureAdapter extends BaseAdapter {
 	private int							itemSize;
@@ -37,8 +33,6 @@ public class PictureAdapter extends BaseAdapter {
 	private RelativeLayout.LayoutParams	params;
 	private PhotoChooseMgr				loaderManager;
 	private ContentResolver				resolver;
-	//private DisplayImageOptions			displayOptions;
-	private DisplayOptions				displayOptions;
 
 	public PictureAdapter(Activity activity) {
 		inflater = activity.getLayoutInflater();
@@ -73,11 +67,6 @@ public class PictureAdapter extends BaseAdapter {
 			}
 		};
 
-		displayOptions = new DisplayOptions().setLoadingImage(R.drawable.image_loading_default).setFailureImage(R.drawable.image_loading_default)
-				.setPauseDownloadImage(R.drawable.image_loading_default).setDecodeGifImage(false).setImageDisplayer(new DefaultImageDisplayer());
-
-		//displayOptions = new DisplayImageOptions.Builder().showImageOnLoading(R.drawable.image_loading_default).showImageOnFail(R.drawable.image_loading_default)
-		//		.imageScaleType(ImageScaleType.EXACTLY).cacheInMemory(true).cacheOnDisk(false).considerExifParams(true).bitmapConfig(Bitmap.Config.RGB_565).build();
 	}
 
 	@Override
@@ -113,7 +102,7 @@ public class PictureAdapter extends BaseAdapter {
 			convertView = inflater.inflate(R.layout.item_picture, null);
 			holder = new ViewHolder();
 			holder.checkBox = (CheckBox) convertView.findViewById(R.id.picture_checkbox);
-			holder.imageView = (SketchImageView) convertView.findViewById(R.id.picture_imageview);
+			holder.imageView = (ImageView) convertView.findViewById(R.id.picture_imageview);
 			holder.textView = (TextView) convertView.findViewById(R.id.text);
 			holder.checkBox.setOnClickListener(listener);
 			params = (RelativeLayout.LayoutParams) holder.imageView.getLayoutParams();
@@ -143,9 +132,7 @@ public class PictureAdapter extends BaseAdapter {
 				//ImageAware imageAware = new ImageViewAware(holder.imageView, false);
 				//ImageLoader.getInstance().displayImage(resolver, ImageDownloader.Scheme.FILE.wrap(item.realPath), item.id, imageAware, displayOptions);
 
-				holder.imageView.setDisplayOptions(displayOptions);
-				holder.imageView.setImageShape(SketchImageView.ImageShape.ROUNDED_RECT);
-				holder.imageView.displayImage(item.realPath);
+				Glide.with(context).load(item.realPath).into(holder.imageView);
 			}
 		}
 		return convertView;
@@ -187,9 +174,9 @@ public class PictureAdapter extends BaseAdapter {
 	}
 
 	class ViewHolder {
-		ImageItem		imageItem;
-		SketchImageView	imageView;
-		CheckBox		checkBox;
-		TextView		textView;
+		ImageItem	imageItem;
+		ImageView	imageView;
+		CheckBox	checkBox;
+		TextView	textView;
 	}
 }

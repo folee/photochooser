@@ -1,5 +1,4 @@
 include ':app'
-include ':library_sketch'
 include ':library_eventbus'
 
 //project(':library_sketch').projectDir = new File(settingsDir, './library_sketch')

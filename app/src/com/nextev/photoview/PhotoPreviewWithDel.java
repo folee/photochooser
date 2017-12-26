@@ -11,15 +11,8 @@ import android.view.WindowManager;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.nextev.photochooser.R;
-
-import me.xiaopan.sketch.CancelCause;
-import me.xiaopan.sketch.DisplayListener;
-import me.xiaopan.sketch.DisplayOptions;
-import me.xiaopan.sketch.FailCause;
-import me.xiaopan.sketch.ImageFrom;
-import me.xiaopan.sketch.SketchImageView;
-import me.xiaopan.sketch.display.DefaultImageDisplayer;
 
 @SuppressLint("NewApi")
 public class PhotoPreviewWithDel extends Dialog {
@@ -29,20 +22,15 @@ public class PhotoPreviewWithDel extends Dialog {
 	private RelativeLayout		preview_image_header;
 	private TextView			header_back;
 	private TextView			tv_del;
-	private SketchImageView		iv_preview;
+	private PhotoView			iv_preview;
 
 	/** 当前图片预览 */
 	String						photoImg;
-
-	private DisplayOptions		displayOptions;
-	private PhotoViewAttacher	photoViewAttacher;
 
 	public PhotoPreviewWithDel(Context context, String photoImg) {
 		super(context, R.style.PhotoViewDialog);
 		this.context = context;
 		this.photoImg = photoImg;
-		displayOptions = new DisplayOptions().setLoadingImage(R.drawable.image_loading_default).setFailureImage(R.drawable.image_loading_default)
-				.setPauseDownloadImage(R.drawable.image_loading_default).setDecodeGifImage(false).setImageDisplayer(new DefaultImageDisplayer());
 	}
 
 	@Override
@@ -55,7 +43,7 @@ public class PhotoPreviewWithDel extends Dialog {
 		preview_image_header = (RelativeLayout) findViewById(R.id.preview_image_header);
 		header_back = (TextView) findViewById(R.id.header_back);
 		tv_del = (TextView) findViewById(R.id.tv_del);
-		iv_preview = (SketchImageView) view.findViewById(R.id.iv_preview);
+		iv_preview = (PhotoView) view.findViewById(R.id.iv_preview);
 
 		header_back.setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -100,24 +88,7 @@ public class PhotoPreviewWithDel extends Dialog {
 			ImageLoader.getInstance().displayImage(imgpath, iv_preview, ImageLoaderUtil.getInstance(context).createNoRoundedOptions(R.drawable.image_loading_default));
 		}*/
 
-		iv_preview.setDisplayOptions(displayOptions);
-		iv_preview.setDisplayListener(new DisplayListener() {
-			@Override
-			public void onStarted() {}
-
-			@Override
-			public void onCompleted(ImageFrom imageFrom, String mimeType) {
-				photoViewAttacher = new PhotoViewAttacher(iv_preview);
-				photoViewAttacher.update();
-			}
-
-			@Override
-			public void onFailed(FailCause failCause) {}
-
-			@Override
-			public void onCanceled(CancelCause cancelCause) {}
-		});
-		iv_preview.displayImage(photoImg);
+		Glide.with(context).load(photoImg).into(iv_preview);
 
 	}
 

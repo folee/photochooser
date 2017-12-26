@@ -5,8 +5,8 @@ dependencies {
 }
 
 android {
-    compileSdkVersion 23
-    buildToolsVersion "23.0.3"
+    compileSdkVersion 25
+    buildToolsVersion '23.0.3'
 
     compileOptions.encoding = 'ISO-8859-1'
 

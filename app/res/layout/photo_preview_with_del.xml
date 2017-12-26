@@ -5,7 +5,7 @@
     android:clickable="false">
 
     <!-- com.android.medicineCommon.photoview.PhotoView -->
-    <me.xiaopan.sketch.SketchImageView
+    <com.nextev.photoview.PhotoView
         android:id="@+id/iv_preview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

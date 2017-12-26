@@ -3,7 +3,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-    <me.xiaopan.sketch.SketchImageView
+    <ImageView
         android:id="@+id/alumb_picture"
         android:layout_width="80dp"
         android:layout_height="80dp"

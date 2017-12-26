@@ -3,6 +3,7 @@ package com.nextev.photochooser.adapter;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.bumptech.glide.Glide;
 import com.nextev.photochooser.R;
 import com.nextev.photochooser.adapter.vo.AlbumItem;
 import com.nextev.photochooser.util.DebugLog;
@@ -18,10 +19,6 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import me.xiaopan.sketch.DisplayOptions;
-import me.xiaopan.sketch.SketchImageView;
-import me.xiaopan.sketch.display.DefaultImageDisplayer;
-
 /**
  * 相册选择Adapter
  */
@@ -29,19 +26,10 @@ public class AlbumAdapter extends BaseAdapter {
 	private Context					context;
 	private Map<Integer, AlbumItem>	albumMap;
 	private int						currAlumbId;
-	private DisplayOptions			displayOptions;
 
 	public AlbumAdapter(Context context) {
 		this.context = context;
 		this.albumMap = new HashMap<Integer, AlbumItem>();
-
-		DefaultImageDisplayer transitionImageDisplayer = new DefaultImageDisplayer();
-		displayOptions = new DisplayOptions()
-				.setLoadingImage(R.drawable.image_loading_default)
-				.setFailureImage(R.drawable.image_loading_default)
-				.setPauseDownloadImage(R.drawable.image_loading_default)
-				.setDecodeGifImage(false)
-				.setImageDisplayer(transitionImageDisplayer);
 	}
 
 	@Override
@@ -72,7 +60,7 @@ public class AlbumAdapter extends BaseAdapter {
 			holder.currFlagView = (ImageView) convertView.findViewById(R.id.alumb_curr_flag);
 			holder.countView = (TextView) convertView.findViewById(R.id.alumb_count);
 			holder.nameView = (TextView) convertView.findViewById(R.id.alubm_name);
-			holder.imageView = (SketchImageView) convertView.findViewById(R.id.alumb_picture);
+			holder.imageView = (ImageView) convertView.findViewById(R.id.alumb_picture);
 
 			convertView.setTag(holder);
 		}
@@ -88,9 +76,7 @@ public class AlbumAdapter extends BaseAdapter {
 			holder.currFlagView.setVisibility(albumItem.id == this.currAlumbId ? View.VISIBLE : View.GONE);
 			//PhotoChooseMgr.getInstance(context).dispalyImage(albumItem.firstImagePath, holder.imageView, albumItem.firstImageId);
 
-			holder.imageView.setDisplayOptions(displayOptions);
-			holder.imageView.setImageShape(SketchImageView.ImageShape.ROUNDED_RECT);
-			holder.imageView.displayImage(albumItem.firstImagePath);
+			Glide.with(context).load(albumItem.firstImagePath).into(holder.imageView);
 		}
 
 		return convertView;
@@ -154,6 +140,6 @@ public class AlbumAdapter extends BaseAdapter {
 		TextView	nameView;
 		TextView	countView;
 		ImageView	currFlagView;
-		SketchImageView	imageView;
+		ImageView	imageView;
 	}
 }
